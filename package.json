@@ -1,0 +1,12 @@
+{
+  "name": "render_sample_1",
+  "version": "0.0.0",
+  "main": "app.js",
+  "license": "MIT",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "4.19.2"
+  }
+}
