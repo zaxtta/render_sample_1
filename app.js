@@ -1,10 +1,29 @@
 const express = require("express");
+const cors = require('cors')
+
 const app = express();
 const port = process.env.PORT || 3001;
 
+app.set("etag", false);
 app.use(express.json())
 
 app.get("/ping", (req, res) => res.send('pong'));
+
+app.use(cors({
+  origin: "*",
+  method: "GET,HEAD,OPTIONS",
+  allowedHeaders: "*",
+  exposedHeaders: "*",
+  credentials: true,
+}));
+app.use((req, res, next) => {
+  const token = req.headers["x-api-key"];
+  if (token === "token") {
+    next();
+  } else {
+    res.status(401).send("Unauthorized")
+  }
+})
 
 app.get("/articles", (req, res) => {
   const page = req.query.page || 1;
@@ -160,4 +179,3 @@ app.get("/users", (req, res) => {
 const server = app.listen(port, () => console.log(`Example app listening on port ${port}!`));
 
 server.keepAliveTimeout = 120 * 1000;
-server.headersTimeout = 120 * 1000;
